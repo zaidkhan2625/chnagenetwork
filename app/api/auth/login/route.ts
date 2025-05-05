@@ -31,7 +31,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json( { message: "Login successful",
         token,
         user: { name: user.name, id: user.id, email: user.email, role: user.role }}, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
