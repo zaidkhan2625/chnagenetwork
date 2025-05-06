@@ -39,11 +39,12 @@ export async function PUT(
     }
 
     // Hash password only if it's provided
-    const updatedFields: any = {
+    const updatedFields = {
       fullName,
       email,
       role,
       managerId: role === "Employee" ? managerId : null,
+      password,
     };
 
     if (password) {
