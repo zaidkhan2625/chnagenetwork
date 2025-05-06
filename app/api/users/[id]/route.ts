@@ -1,47 +1,76 @@
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
+import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(
+export async function DELETE( {params}:any ) {
+    try{
+        await connectDB();
+        const {id}=await params;
+        console.log(id,"id");
+        const deleteUser = await User.findByIdAndDelete(id);
+        if(!deleteUser){
+            return NextResponse.json({message:"user not exist"},{status:404})
+        }
+        return NextResponse.json({message:"user delted susscesfully"},{status:200});
+    }
+    catch(error){
+        console.error("error in delting user",error);
+        return NextResponse.json({message:"Internal server error"},{status:500});
+    }
+    
+}
+export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: any } }
+   {params}:any 
 ) {
   try {
     await connectDB();
+    const { id } = params;
 
-    const { id } = params; // ✅ Do NOT use 'await' here
+    const body = await req.json();
+    const { fullName, email, password, role, managerId } = body;
 
-    console.log("Deleting user with ID:", id);
-
-    const deleteUser = await User.findByIdAndDelete(id);
-
-    if (!deleteUser) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    // Check if required fields are present
+    if (!fullName || !email || !role) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
-  } catch (error) {
-    console.error("Error deleting user:", error);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
-  }
-}
+    // Hash password only if it's provided
+    const updatedFields = {
+      fullName,
+      email,
+      role,
+      managerId: role === "Employee" ? managerId : null,
+      password,
+    };
 
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updatedFields.password = hashedPassword;
+    }
 
-export async function PUT(req: NextRequest, { params }: any) {
-  try {
-    await connectDB();
-    const { id } = params;
-    const body = await req.json();
-
-    const updatedUser = await User.findByIdAndUpdate(id, body, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(id, updatedFields, {
+      new: true,
+    });
 
     if (!updatedUser) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ message: "User updated", user: updatedUser });
-  } catch (error) {
-    console.error("PUT error:", error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { message: "User updated successfully", user: updatedUser },
+      { status: 200 }
+    );
+  } catch(error){
+    console.log("error deleting in user",error);
+    return NextResponse.json({message:"internal server error"},{status:500});
+
   }
 }
