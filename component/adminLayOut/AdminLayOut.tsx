@@ -71,13 +71,14 @@ const AdminLayOut = ({ children }: any) => {
                             <>
                                 <NavItem href="/team" icon={<User size={18} />} text="My team" />
                                 <NavItem href="/order" icon={<User size={18} />} text="Order by team" />
+                                <NavItem href="/product" icon={<Upload size={18} />} text="Add Product" />
+
                             </>
                         )}
 
                         {user.role === "Admin" && (
                             <>
                                 <NavItem href="/team" icon={<User size={18} />} text="Add Team Member" />
-                                <NavItem href="/membership" icon={<Plus size={18} />} text="Add Membership" />
                                 <NavItem href="/product" icon={<Upload size={18} />} text="Add Product" />
                                 <NavItem href="/order" icon={<ShoppingCart size={18} />} text="All Orders" />
                             </>
