@@ -3,24 +3,32 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(  req: NextRequest,
-  {params}:any  ) {
-    try{
-        await connectDB();
-        const { id } = params;
-        console.log(id,"id");
-        const deleteUser = await User.findByIdAndDelete(id);
-        if(!deleteUser){
-            return NextResponse.json({message:"user not exist"},{status:404})
-        }
-        return NextResponse.json({message:"user delted susscesfully"},{status:200});
+export async function DELETE(req: NextRequest, { params }: any) {
+  try {
+    await connectDB();
+    const { id } = params;
+
+    const user = await User.findById(id); // ✅ fixed: no destructuring
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
-    catch(error){
-        console.error("error in delting user",error);
-        return NextResponse.json({message:"Internal server error"},{status:500});
+
+    if (user.role === "Admin") {
+      return NextResponse.json(
+        { message: "Admin cannot be deleted" },
+        { status: 403 }
+      );
     }
-    
+
+    await User.findByIdAndDelete(id);
+    return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+  }
 }
+
 export async function PUT(
   req: NextRequest,
    {params}:any 
