@@ -49,16 +49,16 @@ export async function GET(req:NextRequest) {
     try{
         await connectDB();
         const employee = await getUserFromToken(req);
-        if(employee.role=="Admin") return NextResponse.json("unauthorise",{status:402});
+        if(employee?.role=="Admin") return NextResponse.json("unauthorise",{status:402});
         let order;
 
-if (employee.role === "Manager") {
+if (employee?.role === "Manager") {
   order = await Order.find(); // or apply team filtering as needed
 } else {
-  order = await Order.find({ placedBy: employee.userId });
+  order = await Order.find({ placedBy: employee?.userId });
 }
 
-        await Order.find({placedBy:employee.userId});
+        await Order.find({placedBy:employee?.userId});
         return NextResponse.json(order,{status:200});
 
     }

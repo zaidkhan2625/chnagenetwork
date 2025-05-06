@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       description,
       price,
       image,
-      createdBy: user._id,
+      createdBy: user.userId,
     });
 
     await newProduct.save();
