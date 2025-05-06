@@ -66,11 +66,9 @@ export async function PUT(
       { message: "User updated successfully", user: updatedUser },
       { status: 200 }
     );
-  } catch (error) {
-    console.error("Error updating user:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+  } catch(error){
+    console.log("error deleting in user",error);
+    return NextResponse.json({message:"internal server error"},{status:500});
+
   }
 }

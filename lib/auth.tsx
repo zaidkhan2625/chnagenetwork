@@ -1,7 +1,14 @@
 import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
-export async function getUserFromToken(req: NextRequest) {
+interface DecodedToken {
+  userId: string;
+  role: string;
+  iat?: number;
+  exp?: number;
+}
+
+export async function getUserFromToken(req: NextRequest): Promise<DecodedToken | null> {
   console.log("Start getting user...");
   const authHeader = req.headers.get("authorization");
 
@@ -12,13 +19,13 @@ export async function getUserFromToken(req: NextRequest) {
 
   try {
     const token = authHeader.split(" ")[1];
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
     console.log("Decoded User:", decoded);
     return decoded;
-  }  catch (error: unknown) {
-          if (error instanceof Error) {
-            return (error );
-          }
-          return null;
-        }
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("JWT Error:", error.message);
+    }
+    return null;
+  }
 }
