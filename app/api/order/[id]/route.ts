@@ -3,10 +3,7 @@ import { getUserFromToken } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Order from "@/models/Order";
 import {   NextRequest, NextResponse } from "next/server";
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req:NextRequest ,{params}:{params:{id:string}}) {
   try {
     await connectDB();
     const user = await getUserFromToken(req);
