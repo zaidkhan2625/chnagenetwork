@@ -3,7 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest,  params:any) {
   try {
     await connectDB();
 
@@ -27,7 +27,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   }
   }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, params:any) {
     try {
       await connectDB();
   

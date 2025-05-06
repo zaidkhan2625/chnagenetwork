@@ -3,7 +3,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE( {params}:{params:{id:string}}) {
+export async function DELETE( params:any) {
     try{
         await connectDB();
         const {id}=await params;
