@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     await connectDB();
 
     const manager = await getUserFromToken(req);
-    if (manager.role !== "Manager") {
+    if (manager?.role !== "Manager") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
