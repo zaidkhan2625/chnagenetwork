@@ -6,7 +6,7 @@ import Order from "@/models/Order";
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  context:any
 ) {
   try {
     await connectDB();
