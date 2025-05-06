@@ -1,13 +1,14 @@
+import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Order from "@/models/Order";
-import {  NextResponse } from "next/server";
 
-// App Router API route: /api/orders/[id]/route.ts
-export async function DELETE( { params }: { params: { id: string } }) {
+export async function DELETE(
+  context: { params: { id: string } }
+) {
   try {
     await connectDB();
 
-    const { id } = params;
+    const { id } = context.params;
     const deletedOrder = await Order.findByIdAndDelete(id);
 
     if (!deletedOrder) {
@@ -15,8 +16,10 @@ export async function DELETE( { params }: { params: { id: string } }) {
     }
 
     return NextResponse.json({ message: "Order deleted", order: deletedOrder }, { status: 200 });
-  } catch (error) {
-    console.log("error deleting in user",error);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
