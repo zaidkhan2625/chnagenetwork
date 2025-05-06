@@ -3,10 +3,11 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE( {params}:any ) {
+export async function DELETE(  req: NextRequest,
+  {params}:any  ) {
     try{
         await connectDB();
-        const {id}=await params;
+        const { id } = params;
         console.log(id,"id");
         const deleteUser = await User.findByIdAndDelete(id);
         if(!deleteUser){
