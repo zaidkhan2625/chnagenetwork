@@ -3,10 +3,13 @@ import { getUserFromToken } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Order from "@/models/Order";
 
-export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+type Context = {
+  params: {
+    id: string;
+  };
+};
+
+export async function DELETE(req: NextRequest, context: Context) {
   try {
     await connectDB();
     const user = await getUserFromToken(req);
@@ -15,7 +18,7 @@ export async function DELETE(
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    const { id } = context.params;
+    const { id } = await context.params;
     const deletedOrder = await Order.findByIdAndDelete(id);
 
     if (!deletedOrder) {
