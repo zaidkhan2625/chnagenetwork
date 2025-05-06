@@ -19,10 +19,14 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     }
 
     return NextResponse.json({ message: "Product deleted successfully" }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  }  catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
-}
+  }
+
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
     try {
       await connectDB();
@@ -47,7 +51,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       }
   
       return NextResponse.json({ message: 'Product updated successfully', product: updatedProduct }, { status: 200 });
-    } catch (error: any) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    }  catch (error: unknown) {
+      if (error instanceof Error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+      return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
   }

@@ -15,8 +15,10 @@ export async function getUserFromToken(req: NextRequest) {
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
     console.log("Decoded User:", decoded);
     return decoded;
-  } catch (error) {
-    console.error("Token verification failed:", error);
-    return null;
-  }
+  }  catch (error: unknown) {
+          if (error instanceof Error) {
+            return (error );
+          }
+          return null;
+        }
 }

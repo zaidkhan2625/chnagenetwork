@@ -29,19 +29,25 @@ export async function POST(req: NextRequest) {
       { message: 'Product added successfully', product: newProduct },
       { status: 201 }
     );
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  }  catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
-export async function GET(req:NextRequest) {
+export async function GET() {
     try {
       await connectDB();
       
   
       const products = await Product.find();
       return NextResponse.json({ products }, { status: 200 });
-    } catch (error) {
-      return NextResponse.json({ error: error }, { status: 400 });
-    }
+    }  catch (error: unknown) {
+        if (error instanceof Error) {
+          return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+      }
   }
   

@@ -6,7 +6,7 @@ import Order from '@/models/Order';
 import Product from '@/models/Product';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req:NextRequest,res:NextResponse) {
+export async function POST(req:NextRequest) {
   try {
     await connectDB();
 
@@ -45,7 +45,7 @@ export async function POST(req:NextRequest,res:NextResponse) {
     return NextResponse.json({ error: error }, { status: 500 });
   }
 }
-export async function GET(req:NextRequest,res:NextResponse) {
+export async function GET(req:NextRequest) {
     try{
         await connectDB();
         const employee = await getUserFromToken(req);
@@ -63,6 +63,8 @@ if (employee.role === "Manager") {
 
     }
     catch(error){
+      console.log("error deleting in user",error);
+
         NextResponse.json("Internal server error",{status:500});
     }
     

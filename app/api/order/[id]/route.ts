@@ -1,9 +1,9 @@
 import { connectDB } from "@/lib/mongodb";
 import Order from "@/models/Order";
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 
 // App Router API route: /api/orders/[id]/route.ts
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE( { params }: { params: { id: string } }) {
   try {
     await connectDB();
 
@@ -16,6 +16,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
     return NextResponse.json({ message: "Order deleted", order: deletedOrder }, { status: 200 });
   } catch (error) {
+    console.log("error deleting in user",error);
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }

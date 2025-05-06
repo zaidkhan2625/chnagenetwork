@@ -3,7 +3,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req:NextRequest , {params}:{params:{id:string}}) {
+export async function DELETE( {params}:{params:{id:string}}) {
     try{
         await connectDB();
         const {id}=await params;
@@ -39,7 +39,7 @@ export async function PUT(
     }
 
     // Hash password only if it's provided
-    let updatedFields: any = {
+    const updatedFields: any = {
       fullName,
       email,
       role,

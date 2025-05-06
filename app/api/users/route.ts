@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
 }
 
 // Handle GET request for retrieving all users
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     await connectDB(); // Connect to the database
 
@@ -47,8 +47,11 @@ export async function GET(req: NextRequest) {
 
     // Return users in the response
     return NextResponse.json(users, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+  }  catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
 
