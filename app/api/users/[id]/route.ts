@@ -21,7 +21,7 @@ export async function DELETE( params:any) {
 }
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+   params:any 
 ) {
   try {
     await connectDB();
