@@ -1,11 +1,7 @@
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
-type Params = {
-  params: {
-    id: string;
-  };
-};
+
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: any } }
@@ -31,7 +27,7 @@ export async function DELETE(
 }
 
 
-export async function PUT(req: NextRequest, { params }: Params) {
+export async function PUT(req: NextRequest, { params }: any) {
   try {
     await connectDB();
     const { id } = params;
