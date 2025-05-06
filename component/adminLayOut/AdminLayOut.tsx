@@ -47,7 +47,6 @@ const AdminLayOut = ({ children }: any) => {
 
                     {/* Sidebar Navigation */}
                     <nav className="p-2">
-                        <NavItem href="/dashboard" icon={<LayoutGrid size={18} />} text="Overview" />
 
 
                         {(user.role === "Manager") && <NavItem href="/team" icon={<User size={18} />} text="My team " />}
@@ -79,7 +78,7 @@ const AdminLayOut = ({ children }: any) => {
                 <div className="flex-1 flex flex-col overflow-hidden">
                     {/* Header */}
                     <header className="bg-white shadow-sm h-16 flex items-center justify-center">
-                        <h1 className="text-black font-semibold text-xl md:text-2xl">{user.role == "Admin" ? "Admin Panel" : user.role == "Manager" ? "Manager" : "Employee"}</h1>
+                        <h1 className="text-black font-semibold text-xl md:text-2xl">{user.role == "Admin" ? "Admin Dashboard" : user.role == "Manager " ? "Manager Dashboard" : "Employee Dashboard"}</h1>
                     </header>
 
 

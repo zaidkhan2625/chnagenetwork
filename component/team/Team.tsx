@@ -23,21 +23,21 @@ export default function Team() {
     const [editingMember, setEditingMember] = useState<Member | null>(null);
     // Fetch team members from API
     const { user } = useAuth();
-      const token = Cookies.get("authToken");
-    
+    const token = Cookies.get("authToken");
+
     const fetchMembers = async () => {
         try {
             const url = user.role === "Manager" ? "/api/team" : "/api/users";
             const res = await fetch(url, {
                 method: 'GET',
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
-              });
+            });
 
             const data = await res.json();
-            console.log("data",data);
+            console.log("data", data);
             setTeamMembers(data);
         } catch (error) {
             console.error('Failed to fetch team members:', error);
@@ -119,12 +119,12 @@ export default function Team() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
-               {user.role=="Admin"? <button
+                {user.role == "Admin" ? <button
                     onClick={handleAdd}
                     className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
                 >
                     <Plus size={18} /> Add Member
-                </button>:""}
+                </button> : ""}
             </div>
 
             <div className="overflow-x-auto">
@@ -134,9 +134,9 @@ export default function Team() {
                             <th className="text-left py-3 px-6">Name</th>
                             <th className="text-left py-3 px-6">Email</th>
                             <th className="text-left py-3 px-6">Role</th>
-                            {user.role=="Manager"?"":<th className="text-left py-3 px-6">Manager</th>}
+                            {user.role == "Manager" ? "" : <th className="text-left py-3 px-6">Manager</th>}
 
-                            {user.role=="Manager"?"":<th className="text-left py-3 px-6">Actions</th>}
+                            {user.role == "Manager" ? "" : <th className="text-left py-3 px-6">Actions</th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -145,29 +145,28 @@ export default function Team() {
                                 <td className="py-3 px-6">{member.fullName}</td>
                                 <td className="py-3 px-6">{member.email}</td>
                                 <td className="py-3 px-6">{member.role}</td>
-                                {user.role=="Manager"?"":<td className="py-3 px-6">
+                                {user.role == "Manager" ? "" : <td className="py-3 px-6">
                                     {member.role === 'Employee' ? getManagerName(member.managerId) : '-'}
                                 </td>}
-                                 {user.role=="Manager"?"":
-                                <td className="py-3 px-6 flex gap-2">
-                                    <button
-                                        className="bg-blue-500 text-white px-3 py-1 rounded"
-                                        onClick={() => {
-                                            setEditingMember(member);
-                                            alert(JSON.stringify(member));
-                                            setShowAddModal(true);
-                                        }}
-                                    >
-                                        <Pencil size={16} />
-                                    </button>
+                                {user.role == "Manager" ? "" :
+                                    <td className="py-3 px-6 flex gap-2">
+                                        <button
+                                            className="bg-blue-500 text-white px-3 py-1 rounded"
+                                            onClick={() => {
+                                                setEditingMember(member);
+                                                setShowAddModal(true);
+                                            }}
+                                        >
+                                            <Pencil size={16} />
+                                        </button>
 
-                                    <button
-                                        className="bg-red-500 text-white px-3 py-1 rounded"
-                                        onClick={() => handleDelete(member._id)}
-                                    >
-                                        <Trash2 size={16} />
-                                    </button>
-                                </td>}
+                                        <button
+                                            className="bg-red-500 text-white px-3 py-1 rounded"
+                                            onClick={() => handleDelete(member._id)}
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </td>}
                             </tr>
                         ))}
                     </tbody>

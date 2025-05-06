@@ -10,13 +10,9 @@ export async function DELETE(
 ) {
   try {
     await connectDB();
-    const user = await getUserFromToken(req);
+    
 
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-
-    const { id } = context.params;
+    const { id } = await context.params;
     const deletedOrder = await Order.findByIdAndDelete(id);
 
     if (!deletedOrder) {

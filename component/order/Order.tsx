@@ -97,7 +97,7 @@ function Order() {
 
   return (
     <div className="p-4 space-y-4">
-      <h2 className="text-2xl font-bold text-center">Orders</h2>
+      <h2 className="text-2xl font-bold text-center text-black">Orders</h2>
       <div className="space-y-4 text-black">
         {orders.map(order => {
           const product = products.find(p => p._id === order.product);
