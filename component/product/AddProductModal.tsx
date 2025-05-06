@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 
-export default function AddProductModal({ isOpen, onClose, onAdd, name, description, price, image, id }: any) {
+export default function AddProductModal({ isOpen,onRefresh , onClose, name, description, price, image, id }: any) {
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -56,12 +56,12 @@ export default function AddProductModal({ isOpen, onClose, onAdd, name, descript
   };
 
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      let imageUrl = imagePreview || ""; // default to existing image
+      let imageUrl = imagePreview || "";
       if (form.image) {
         imageUrl = await uploadToCloudinary(form.image);
       }
@@ -86,31 +86,34 @@ export default function AddProductModal({ isOpen, onClose, onAdd, name, descript
       const result = await response.json();
 
       if (!response.ok) throw new Error(result.message || "Failed to submit");
+              if (onRefresh) onRefresh(); // ✅ Refresh after deletion
 
       Swal.fire({
         icon: "success",
         title: isEditMode ? "Product Updated" : "Product Added",
-        text: isEditMode
-          ? "The product was updated successfully!"
-          : "The product was added successfully!",
-        timer: 2000,
+        timer: 1500,
         showConfirmButton: false,
+      }).then(() => {
+        // onAdd && onAdd(result.product);
+        if (onRefresh) onRefresh(); // ✅ Refresh after deletion
+        setForm({ name: "", description: "", price: "", image: null });
+        setImagePreview(null);
+        onClose();
       });
 
-      onAdd && onAdd(result.product);
-      setForm({ name: "", description: "", price: "", image: null });
-      setImagePreview(null);
-      onClose();
     } catch (err) {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text:  "Something went wrong",
+        text: "Something went wrong",
       });
     } finally {
       setLoading(false);
     }
   };
+
+
+  
 
 
   if (!isOpen) return null;

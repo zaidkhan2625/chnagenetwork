@@ -1,17 +1,19 @@
 import { useAuth } from '@/app/context/AuthContext';
 import { Pencil, Trash } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import Cookies from "js-cookie";
 import AddProductModal from './AddProductModal';
 import PlaceOrderModal from './PlaceOrderModal';
 
-function ProductCard({ name, description, price, image, id, onDelete }: any) {
+function ProductCard({ name, description, price,onRefresh, image, id, onDelete }: any) {
   const { user } = useAuth();
   const token = Cookies.get("authToken");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlaceOrderModalOpen, setIsPlaceOrderModalOpen] = useState(false);
-
+  useEffect(()=>{
+   
+  },[name, description, price, image, id, onDelete])
   const handleDelete = async () => {
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -35,6 +37,7 @@ function ProductCard({ name, description, price, image, id, onDelete }: any) {
 
         if (res.ok) {
           Swal.fire('Deleted!', 'The product has been deleted.', 'success');
+          if (onRefresh) onRefresh(); // ✅ Refresh after deletion
           if (onDelete) onDelete(id); // Call callback to update UI
         } else {
           const data = await res.json();
@@ -79,12 +82,14 @@ function ProductCard({ name, description, price, image, id, onDelete }: any) {
       <AddProductModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onAdd={undefined}
+       
         name={name}
         description={description}
         price={price}
         image={image}
         id={id}
+        onRefresh={onRefresh} // Optional: pass to card for delete
+
       />
 
       {/* PlaceOrderModal */}

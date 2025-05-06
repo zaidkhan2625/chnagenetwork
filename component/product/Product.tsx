@@ -1,40 +1,48 @@
+// ProductGrid.tsx
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import ProductCard from './ProductCard';
 import AddProductModal from './AddProductModal';
 import { useAuth } from '@/app/context/AuthContext';
+
 interface Product {
-    name: string
-    description: string
-    price: string
-    image: string
-    _id: string
+    name: string;
+    description: string;
+    price: string;
+    image: string;
+    _id: string;
 }
+
 export default function ProductGrid() {
     const [searchTerm, setSearchTerm] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const { user } = useAuth();
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const res = await fetch('/api/products');
-                const data = await res.json();
-                if (res.ok) {
-                    setProducts(data.products);
-                } else {
-                    console.error("Failed to fetch products:", data.error);
-                }
-            } catch (err) {
-                console.error("Fetch error:", err);
+
+    const fetchProducts = useCallback(async () => {
+        try {
+            const res = await fetch('/api/products');
+            const data = await res.json();
+            if (res.ok) {
+                setProducts(data.products);
+            } else {
+                console.error("Failed to fetch products:", data.error);
             }
-        };
-
-        fetchProducts();
+        } catch (err) {
+            console.error("Fetch error:", err);
+        }
     }, []);
+    const triggerRefresh = () => {
+        fetchProducts();
+    };
 
-    const handleAddProduct = (newProduct: any) => {
-        // Optionally POST the new product to your API here.
+    useEffect(() => {
+        fetchProducts();
+    }, [fetchProducts]);
+
+    
+    const handleAddProduct = (newProduct: Product) => {
+        // Optional: use fetch instead to avoid duplicates
         setProducts(prev => [...prev, newProduct]);
     };
 
@@ -81,6 +89,7 @@ export default function ProductGrid() {
                         description={product.description}
                         price={product.price}
                         image={product.image}
+                        onRefresh={triggerRefresh} // Optional: pass to card for delete
                     />
                 ))}
             </div>
@@ -95,6 +104,8 @@ export default function ProductGrid() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onAdd={handleAddProduct}
+                onRefresh={fetchProducts} // Optional: pass to card for delete
+
             />
         </div>
     );

@@ -3,11 +3,12 @@ import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: NextRequest,  params:any) {
+export async function DELETE(req: NextRequest,  {params}:any) {
   try {
     await connectDB();
 
     const { id } = await params;
+    console.log(id,"id");
      const user = await getUserFromToken(req);
         if (!user || user.role === 'Employee') {
           return NextResponse.json({ message: 'Not authorized' }, { status: 403 });
@@ -27,7 +28,7 @@ export async function DELETE(req: NextRequest,  params:any) {
   }
   }
 
-export async function PUT(req: NextRequest, params:any) {
+export async function PUT(req: NextRequest, {params}:any) {
     try {
       await connectDB();
   
