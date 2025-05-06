@@ -57,12 +57,11 @@ const AdminLayOut = ({ children }: any) => {
                         {user.role === "Employee" && <NavItem href="/product" icon={<Package size={18} />} text="product" />}
                         {user.role === "Employee" && <NavItem href="/order" icon={<ShoppingCart size={18} />} text="order" />}
 
-                        {(user.role === "ADMIN" || user.role === "USER") && (
-                            <NavItem href="/upload-data" icon={<Upload size={18} />} text="Upload Data" />
-                        )}
+                      
                         {(user.role === "Admin" || user.role === "Manager") && (
                             <NavItem href="/product" icon={<Upload size={18} />} text="Add Product" />
                         )}
+                        {user.role === "Admin" && <NavItem href="/order" icon={<ShoppingCart size={18} />} text="All order" />}
 
                     </nav>
                     <button
