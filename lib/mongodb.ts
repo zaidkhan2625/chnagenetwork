@@ -1,7 +1,7 @@
 // lib/mongodb.ts
 import mongoose from 'mongoose';
 
-const MONGODB_URI = "mongodb+srv://zaidkhan262523:1234Khan@cluster0.ewljkrr.mongodb.net/rbms?retryWrites=true&w=majority";
+const MONGODB_URI = process.env.MONGODB_URI!;
 
 // To prevent multiple connections in development (especially with hot reload)
 let isConnected = false;
