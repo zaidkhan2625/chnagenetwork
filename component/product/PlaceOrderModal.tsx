@@ -49,8 +49,8 @@ const PlaceOrderModal: React.FC<PlaceOrderModalProps> = ({ isOpen, onClose, prod
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-md w-1/3">
+        <div className="fixed inset-0 flex justify-center items-center z-50 bg-opacity-50">
+          <div className="bg-white p-6 rounded-md text-black w-1/3">
             <h2 className="text-xl font-semibold text-gray-800">Place Order</h2>
             <div className="mt-4">
               <label className="block text-sm text-gray-700">Customer Name</label>
