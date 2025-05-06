@@ -64,7 +64,7 @@ function ProductCard({ name, description, price,onRefresh, image, id, onDelete }
           <div className="flex justify-between items-center mt-4">
             <span className="text-xl font-bold text-gray-900">{price}</span>
             <button
-              className="px-3 py-1 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700"
+              className="px-3 py-1 bg-indigo-600 text-white cursor-pointer text-sm font-medium rounded-md hover:bg-indigo-700"
               onClick={() => setIsPlaceOrderModalOpen(true)}
             >
               Place Order

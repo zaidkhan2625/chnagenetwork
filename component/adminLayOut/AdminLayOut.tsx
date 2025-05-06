@@ -67,7 +67,7 @@ const AdminLayOut = ({ children }: any) => {
                     </nav>
                     <button
                         onClick={handleLogout}
-                        className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition-all"
+                        className="fixed bottom-4 left-1/2 transform cursor-pointer -translate-x-1/2 bg-red-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition-all"
                     >
                         Logout
                     </button>

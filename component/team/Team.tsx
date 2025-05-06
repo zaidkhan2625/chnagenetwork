@@ -121,7 +121,7 @@ export default function Team() {
                 />
                 {user.role == "Admin" ? <button
                     onClick={handleAdd}
-                    className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                    className="flex items-center gap-2 cursor-pointer bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
                 >
                     <Plus size={18} /> Add Member
                 </button> : ""}
@@ -151,7 +151,7 @@ export default function Team() {
                                 {user.role == "Manager" ? "" :
                                     <td className="py-3 px-6 flex gap-2">
                                         <button
-                                            className="bg-blue-500 text-white px-3 py-1 rounded"
+                                            className="bg-blue-500 cursor-pointer text-white px-3 py-1 rounded"
                                             onClick={() => {
                                                 setEditingMember(member);
                                                 setShowAddModal(true);
@@ -161,7 +161,7 @@ export default function Team() {
                                         </button>
 
                                         <button
-                                            className="bg-red-500 text-white px-3 py-1 rounded"
+                                            className="bg-red-500 cursor-pointer text-white px-3 py-1 rounded"
                                             onClick={() => handleDelete(member._id)}
                                         >
                                             <Trash2 size={16} />
@@ -180,7 +180,7 @@ export default function Team() {
                         setEditingMember(null);
                     }}
                     onSubmit={handleSubmitNewMember}
-                    initialData={editingMember} // 👈 pre-filled form data
+                    initialData={editingMember} // 👈
                     managers={managers}
 
                 />

@@ -73,7 +73,7 @@ export default function ProductGrid() {
                 {user?.role !== "Employee" && (
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700"
+                        className="bg-indigo-600 text-white cursor-pointer px-5 py-2 rounded-lg hover:bg-indigo-700"
                     >
                         Add Product
                     </button>
